@@ -1,0 +1,275 @@
+<!--
+  Copyright 2014 IBM Corp.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+
+<script type="text/x-red" data-template-name="amazon s3 in">
+    <div class="form-row">
+        <label for="node-input-aws"><i class="fa fa-user"></i> <span data-i18n="aws.label.aws"></span></label>
+        <input type="text" id="node-input-aws">
+    </div>
+    <div class="form-row">
+        <label for="node-input-bucket"><i class="fa fa-folder"></i> <span data-i18n="aws.label.bucket"></span></label>
+        <input type="text" id="node-input-bucket" data-i18n="[placeholder]aws.placeholder.bucket">
+    </div>
+    <div class="form-row node-input-filepattern">
+         <label for="node-input-filepattern"><i class="fa fa-file"></i> <span data-i18n="aws.label.pattern"></span></label>
+         <input type="text" id="node-input-filepattern" data-i18n="[placeholder]aws.placeholder.pattern">
+    </div>
+    <div class="form-row">
+        <label for="node-input-region"><i class="fa fa-tag"></i> <span data-i18n="aws.label.region"></span></label>
+        <select type="text" id="node-input-region" style="width:72%;">
+            <option selected value="us-west-1">us-west-1</option>
+            <option value="us-west-2">us-west-2</option>
+            <option value="us-east-1">us-east-1</option>
+            <option value="eu-west-1">eu-west-1</option>
+            <option value="eu-central-1">eu-central-1</option>
+            <option value="ap-northeast-1">ap-northeast-1</option>
+            <option value="ap-northeast-2">ap-northeast-2</option>
+            <option value="ap-southeast-1">ap-southeast-1</option>
+            <option value="ap-southeast-2">ap-southeast-2</option>
+            <option value="sa-east-1">sa-east-1</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="aws.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]aws.placeholder.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="amazon s3 in">
+    <p>Amazon S3 watch node. Watches for file events on Box. By default all
+    file events are reported, but the filename pattern can be supplied
+    to limit the events to files which have full filenames that match
+    the glob pattern. The event messages consist of the full filename
+    in <b>msg.payload</b> property, the filename in <b>msg.file</b>,
+    the event type in <b>msg.event</b>.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('amazon s3 in',{
+        category: 'storage-input',
+        color:"#f7d591",
+        defaults: {
+            aws: {type:"aws-config",required:true},
+            bucket: {required:true},
+            region: {value:"", required:true},
+            contentType: {value:""},
+            filepattern: {value:""},
+            name: {value:""},
+        },
+        inputs:0,
+        outputs:1,
+        icon: "amazon.png",
+        label: function() {
+            return this.bucket ? "s3 "+this.bucket : "s3";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="amazon s3 get">
+    <div class="form-row">
+        <label for="node-input-aws"><i class="fa fa-user"></i> <span data-i18n="aws.label.aws"></span></label>
+        <input type="text" id="node-input-aws">
+    </div>
+    <div class="form-row">
+        <label for="node-input-bucket"><i class="fa fa-folder"></i> <span data-i18n="aws.label.bucket"></span></label>
+        <input type="text" id="node-input-bucket" data-i18n="[placeholder]aws.placeholder.bucket">
+    </div>
+    <div class="form-row node-input-filename">
+         <label for="node-input-filename"><i class="fa fa-file"></i> <span data-i18n="aws.label.filename"></span></label>
+         <input type="text" id="node-input-filename" data-i18n="[placeholder]aws.placeholder.filename">
+    </div>
+    <div class="form-row">
+        <label for="node-input-format"><i class="fa fa-sign-out"></i> <span data-i18n="aws.label.outputas"></span></label>
+        <select id="node-input-format">
+            <option value="utf8" data-i18n="aws.label.utf8"></option>
+            <option value="" data-i18n="aws.label.buffer"></option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-region"><i class="fa fa-tag"></i> <span data-i18n="aws.label.region"></span></label>
+        <select type="text" id="node-input-region" style="width:72%;">
+            <option selected value="us-west-1">us-west-1</option>
+            <option value="us-west-2">us-west-2</option>
+            <option value="us-east-1">us-east-1</option>
+            <option value="eu-west-1">eu-west-1</option>
+            <option value="eu-central-1">eu-central-1</option>
+            <option value="ap-norteast-1">ap-northeast-1</option>
+            <option value="ap-norteast-2">ap-northeast-2</option>
+            <option value="ap-southeast-1">ap-southeast-1</option>
+            <option value="ap-southeast-2">ap-southeast-2</option>
+            <option value="sa-east-1">sa-east-1</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-name"><i class="fa fa-tag"></i> <span data-i18n="aws.label.name"></span></label>
+        <input type="text" id="node-input-name" data-i18n="[placeholder]aws.placeholder.name">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="amazon s3 get">
+    <p>Amazon S3 input node. Downloads content from an Amazon S3 bucket. The bucket name can be specified in the node <b>bucket</b> property or in the <b>msg.bucket</b> property. The name of the file to download is taken from the node <b>filename</b> property or the <b>msg.filename</b> property. The downloaded content is sent as <b>msg.payload</b> property. If the download fails <b>msg.error</b> will contain an error object.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('amazon s3 get',{
+        category: 'storage-output',
+        color:"#f7d591",
+        defaults: {
+            aws: {type:"aws-config",required:true},
+            bucket: {required:true},
+            filename: {value:""},
+            region: {value:"", required:true},
+            name: {value:""},
+            format: {value:""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "amazon.png",
+        align: "right",
+        label: function() {
+            return this.bucket ? "s3 "+this.bucket : "s3";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="amazon s3 put">
+    <div class="form-row">
+        <label for="node-input-aws"><i class="fa fa-user"></i> <span data-i18n="aws.label.aws"></span></label>
+        <input type="text" id="node-input-aws">
+    </div>
+    <div class="form-row">
+        <label for="node-input-bucket"><i class="fa fa-folder"></i> <span data-i18n="aws.label.bucket"></span></label>
+        <input type="text" id="node-input-bucket" data-i18n="[placeholder]aws.placeholder.bucket">
+    </div>
+    <div class="form-row node-input-filename">
+         <label for="node-input-filename"><i class="fa fa-file"></i> <span data-i18n="aws.label.filename"></span></label>
+         <input type="text" id="node-input-filename" data-i18n="[placeholder]aws.placeholder.filename">
+    </div>
+    <div class="form-row node-input-localFilename">
+         <label for="node-input-localFilename"><i class="fa fa-file"></i> <span data-i18n="aws.label.local"></span></label>
+         <input type="text" id="node-input-localFilename" data-i18n="[placeholder]aws.placeholder.local">
+    </div>
+    <div class="form-row">
+        <label for="node-input-region"><i class="fa fa-tag"></i> <span data-i18n="aws.label.region"></span></label>
+        <select type="text" id="node-input-region" style="width:72%;">
+            <option selected value="us-west-1">us-west-1</option>
+            <option value="us-west-2">us-west-2</option>
+            <option value="us-east-1">us-east-1</option>
+            <option value="eu-west-1">eu-west-1</option>
+            <option value="eu-central-1">eu-central-1</option>
+            <option value="ap-norteast-1">ap-northeast-1</option>
+            <option value="ap-norteast-2">ap-northeast-2</option>
+            <option value="ap-southeast-1">ap-southeast-1</option>
+            <option value="ap-southeast-2">ap-southeast-2</option>
+            <option value="sa-east-1">sa-east-1</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-acl"><i class="fa fa-tag"></i> <span data-i18n="aws.label.acl"></span></label>
+        <select type="text" id="node-input-acl" style="width:72%;">
+            <option selected value="private">private</option>
+            <option value="public-read">public-read</option>
+            <option value="public-read-write">public-read-write</option>
+            <option value="aws-exec-read">aws-exec-read</option>
+            <option value="authenticated-read">authenticated-read</option>
+            <option value="bucket-owner-read">bucket-owner-read</option>
+            <option value="bucket-owner-full-control">bucket-owner-full-control</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-contentType"><i class="fa fa-tag"></i> <span data-i18n="aws.label.contentType"></span></label>
+        <select type="text" id="node-input-contentType" style="width:72%;">
+            <option selected value="">Select</option>
+            <option value="image/jpeg">image/jpeg</option>
+            <option value="image/png">image/png</option>
+            <option value="application/pdf">application/pdf</option>
+            <option value="image/gif">image/gif</option>
+            <option value="application/json">application/json</option>
+            <option value="application/xml">application/xml</option>
+            <option value="application/javascript">application/javascript</option>
+        </select>
+    </div>
+    <div class="form-row">
+        <label for="node-input-contentEncoding"><i class="fa fa-tag"></i> <span data-i18n="aws.label.contentEncoding"></span></label>
+        <input type="text" id="node-input-contentEncoding">
+    </div>
+    <div class="form-row">
+        <label for="node-input-isBase64"><i class="fa fa-tag"></i> <span data-i18n="aws.label.isBase64"></span></label>
+        <input type="checkbox" style="width: 15px" id="node-input-isBase64">
+    </div>
+</script>
+
+<script type="text/x-red" data-help-name="amazon s3 put">
+    <p>Amazon S3 put node. Uploads content to an Amazon S3 bucket. The bucket name can be specified in the node <b>bucket</b> property or in the <b>msg.bucket</b> property. The filename on Amazon S3 is taken from the node <b>filename</b> property or the <b>msg.filename</b> property. The content is taken from either the node <b>localFilename</b> property, the <b>msg.localFilename</b> property or the <b>msg.payload</b> property.</p>
+</script>
+
+<script type="text/javascript">
+    RED.nodes.registerType('amazon s3 put',{
+        category: 'storage-output',
+        color:"#f7d591",
+        defaults: {
+            aws: {type:"aws-config",required:true},
+            bucket: {required:true},
+            filename: {value:""},
+            localFilename: {value:""},
+            contentType: {value: ""},
+            contentEncoding: {value: ""},
+            region: {value:"", required:true},
+            isBase64: {value: ""},
+            name: {value:""},
+            acl: {value: ""}
+        },
+        inputs:1,
+        outputs:1,
+        icon: "amazon.png",
+        align: "right",
+        label: function() {
+            return this.name || this.bucket ? "s3 "+this.bucket : "s3";
+        }
+    });
+</script>
+
+<script type="text/x-red" data-template-name="aws-config">
+    <div class="form-row">
+        <label for="node-config-input-accesskeyid"><i class="fa fa-bookmark"></i><span data-i18n="aws.label.keyid"></span></label>
+        <input class="input-append-left" type="text" id="node-config-input-accesskeyid" style="width: 40%;" >
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-secretaccesskey"><i class="fa fa-bookmark"></i><span data-i18n="aws.label.secret"></span></label>
+        <input class="input-append-left" type="password" id="node-config-input-secretaccesskey" style="width: 40%;" >
+    </div>
+    <div class="form-tips">
+        <span data-i18n="[html]aws.tip.config1"></span>
+        <span data-i18n="[html]aws.tip.config2"></span>
+    </div>
+</script>
+
+<script type="text/javascript">
+(function() {
+    RED.nodes.registerType('aws-config',{
+        category: 'config',
+        defaults: { },
+        credentials: {
+            accesskeyid: {type:"text",required:true},
+            secretaccesskey: {type: "password",required:true},
+        },
+        label: function() {
+            return this.accesskeyid ? "AWS "+this.accesskeyid : "AWS";
+        },
+        exportable: false,
+    });
+})();
+</script>
