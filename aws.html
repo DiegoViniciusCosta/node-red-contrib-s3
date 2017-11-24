@@ -120,7 +120,14 @@
 </script>
 
 <script type="text/x-red" data-help-name="amazon s3 get">
-    <p>Amazon S3 input node. Downloads content from an Amazon S3 bucket. The bucket name can be specified in the node <b>bucket</b> property or in the <b>msg.bucket</b> property. The name of the file to download is taken from the node <b>filename</b> property or the <b>msg.filename</b> property. The downloaded content is sent as <b>msg.payload</b> property. If the download fails <b>msg.error</b> will contain an error object.</p>
+    <p>
+        Amazon S3 input node. Downloads content from an Amazon S3 bucket. 
+        The bucket name can be specified in the node <b>bucket</b> property or in the <b>msg.bucket</b> property. 
+        The name of the file to download is taken from the node <b>filename</b> property or the <b>msg.filename</b> property. 
+        The downloaded content is sent as <b>msg.payload</b> property. 
+        The downloaded content is sent as <b>msg.payload</b> property. 
+        If the download fails <b>msg.error</b> will contain an error object.
+    </p>
 </script>
 
 <script type="text/javascript">
@@ -213,7 +220,16 @@
 </script>
 
 <script type="text/x-red" data-help-name="amazon s3 put">
-    <p>Amazon S3 put node. Uploads content to an Amazon S3 bucket. The bucket name can be specified in the node <b>bucket</b> property or in the <b>msg.bucket</b> property. The filename on Amazon S3 is taken from the node <b>filename</b> property or the <b>msg.filename</b> property. The content is taken from either the node <b>localFilename</b> property, the <b>msg.localFilename</b> property or the <b>msg.payload</b> property.</p>
+    <p>
+        Amazon S3 put node. Uploads content to an Amazon S3 bucket. 
+        The bucket name can be specified in the node <b>bucket</b> property or in the <b>msg.bucket</b> property. 
+        The filename on Amazon S3 is taken from the node <b>filename</b> property or the <b>msg.filename</b> property. 
+        The content is taken from either the node <b>localFilename</b> property, the <b>msg.localFilename</b> property or the <b>msg.payload</b> property.
+        The acl is taken from the node <b>ACL</b> property or the <b>msg.acl</b> property.
+        The content type is taken from the node <b>Content Type</b> property or the <b>msg.contentType</b> property.
+        The content encoding is taken from the node <b>Content Encoding</b> property or the <b>msg.contentEncoding</b> property.
+        The "Is Base64" is taken from the node <b>Is Base64</b> property or the <b>msg.isBase64</b> property.
+    </p>
 </script>
 
 <script type="text/javascript">
