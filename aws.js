@@ -15,7 +15,7 @@ module.exports = function(RED) {
         }
     }
 
-    RED.nodes.registerType("aws-config",AWSNode,{
+    RED.nodes.registerType("aws-config-s3",AWSNode,{
         credentials: {
             accesskeyid: { type:"text" },
             secretaccesskey: { type: "password" }
