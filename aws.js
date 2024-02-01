@@ -6,11 +6,12 @@ module.exports = function(RED) {
     function AWSNode(n) {
         RED.nodes.createNode(this,n);
         if (this.credentials &&
-            this.credentials.accesskeyid && this.credentials.secretaccesskey) {
+            this.credentials.accesskeyid && this.credentials.secretaccesskey && this.credentials.sessiontoken) {
             this.AWS = require("aws-sdk");
             this.AWS.config.update({
                 accessKeyId: this.credentials.accesskeyid,
                 secretAccessKey: this.credentials.secretaccesskey,
+                sessionToken: this.credentials.sessiontoken
             });
         }
     }
@@ -18,7 +19,8 @@ module.exports = function(RED) {
     RED.nodes.registerType("aws-config-s3",AWSNode,{
         credentials: {
             accesskeyid: { type:"text" },
-            secretaccesskey: { type: "password" }
+            secretaccesskey: { type: "password" },
+            sessiontoken: { type: "password"}
         }
     });
 

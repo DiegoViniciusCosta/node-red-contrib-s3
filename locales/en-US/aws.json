@@ -10,6 +10,7 @@
             "local": "Local Filename",
             "keyid": "AccessKeyID",
             "secret": "Secret Access Key",
+            "token": "Session Token",
             "contentType": "Content Type",
             "contentEncoding": "Content Encoding",
             "isBase64": "Is Base64",
@@ -28,7 +29,7 @@
         },
         "tip": {
             "config1": "<p>To obtain these credentials, sign up to <a href='http://aws.amazon.com/'>Amazon Web Services</a>, Then either:</p>",
-            "config2": "<ul><li>click on your account name and select 'Security Credentials' then click 'Access Keys (Access Key ID and Secret Access Key)' or</li><li>select 'IAM' under 'Deployment & Management' from the AWS console and create an 'IAM' user with a suitable policy.</li></ul>"
+            "config2": "<ul><li>click on your account name and select 'Security Credentials' then click 'Access Keys (Access Key ID, Secret Access Key, Session Token)' or</li><li>select 'IAM' under 'Deployment & Management' from the AWS console and create an 'IAM' user with a suitable policy.</li></ul>"
         },
         "status": {
             "initializing": "initializing",
